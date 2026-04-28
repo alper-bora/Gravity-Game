@@ -5,40 +5,69 @@
  */
 
 #include "game.h"
-#include "player.h"
-#include "robot.h"
+#include "backpack.h"
 #include "boulder.h"
 #include "input_queue.h"
-#include "backpack.h"
+#include "player.h"
+#include "robot.h"
+#include "types.h"
 #include "utils.h"
 
-/*
- * TODO: Implement game_init()
- *
- * Steps:
- *   1. Clear the entire field
- *   2. Place walls '#' on all border cells
- *        - Top row (row 0), bottom row (row 24)
- *        - Left col (col 0), right col (col 54)
- *   3. Fill all interior cells with earth ':'
- *   4. Randomly pick 180 earth cells -> set to boulder 'O'
- *   5. Randomly pick 30 earth cells  -> set to treasure
- *        (randomly choose '1', '2', or '3' with equal probability)
- *   6. Randomly pick 200 earth cells -> set to empty ' '
- *   7. Randomly pick 7 earth cells   -> set to robot 'X'
- *        (store their positions in the robots array)
- *   8. Randomly pick 1 earth cell    -> set to player 'P'
- *        (store position in player_row, player_col)
- *   9. Initialize backpack: backpack_init()
- *  10. Set teleports = INITIAL_TELEPORTS
- *  11. Set score = 0, time_elapsed = 0, is_game_over = 0
- *  12. Fill input queue: input_queue_init()
- *  13. Set insert_timer = INPUT_INSERT_INTERVAL * TARGET_FPS
- *
- * HINT: Write a helper to pick a random earth cell:
- *       Pick random row/col, if it's earth ':', return it.
- *       Otherwise try again.
- */
+void game_init(gameStats *stats) {
+  // Placing the walls
+  for (int i = 0; i < FIELD_ROWS; i++) {
+    for (int j = 0; j < FIELD_COLS; j++) {
+      if ((i == 0 || i == FIELD_ROWS - 1) || (j == 0 || j == FIELD_COLS - 1)) {
+        stats->field[i][j] = '#';
+      } else {
+        stats->field[i][j] = ':';
+      }
+    }
+  }
+
+  // Randomly distributing cells
+  for (int i = 0; i < 180; i++) {
+    int r, c;
+    find_random_cell(stats->field, CELL_EARTH, &r, &c);
+    stats->field[r][c] = CELL_BOULDER;
+  }
+
+  for (int i = 0; i < 30; i++) {
+    int r, c;
+    find_random_cell(stats->field, CELL_EARTH, &r, &c);
+    stats->field[r][c] = CELL_TREASURE_1 + random_range(0, 2);
+  }
+
+  for (int i = 0; i < 200; i++) {
+    int r, c;
+    find_random_cell(stats->field, CELL_EARTH, &r, &c);
+    stats->field[r][c] = CELL_EMPTY;
+  }
+
+  for (int i = 0; i < 7; i++) {
+    int r, c;
+    find_random_cell(stats->field, CELL_EARTH, &r, &c);
+    stats->field[r][c] = CELL_ROBOT;
+    stats->robots[i].r = r;
+    stats->robots[i].c = c;
+  }
+
+  find_random_cell(stats->field, CELL_EARTH, &stats->player_row,
+                   &stats->player_col);
+  stats->field[stats->player_row][stats->player_col] = CELL_PLAYER;
+
+  // Stat initialization
+  stats->teleports = INITIAL_TELEPORTS;
+  stats->is_game_over = 0;
+  stats->time_elapsed = 0;
+  stats->score = 0;
+
+  backpack_init(&(stats->backpack));
+  input_queue_init(&(stats->input_queue));
+
+  stats->insert_timer = INPUT_INSERT_INTERVAL * TARGET_FPS;
+  return;
+}
 
 /*
  * TODO: Implement game_check_over()

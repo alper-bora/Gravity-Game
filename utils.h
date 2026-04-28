@@ -15,80 +15,28 @@
 
 #include "types.h"
 
-/*
- * random_range()
- * ---------------
- * Generate a random integer in [min, max] inclusive.
- *
- * TODO: Implement
- */
-/* int random_range(int min, int max); */
+int random_range(int min, int max); // Returns a random number in a range.
 
-/*
- * find_random_cell()
- * ------------------
- * Find a random cell in the field that contains the specified
- * cell type. Returns the row and col via pointers.
- *
- * Example: find a random earth cell for placing a boulder.
- *
- * WARNING: If no cell of that type exists, this could loop
- * forever. Add a max-attempt limit as a safety measure.
- *
- * TODO: Implement
- */
-/* void find_random_cell(char field[FIELD_ROWS][FIELD_COLS],
- *                       char target_type,
- *                       int *out_row, int *out_col); */
+void find_random_cell(char field[FIELD_ROWS][FIELD_COLS], cellTypes target_type,
+                      int *out_row, int *out_col);
+// Finds a random cell that contains the specified cell type. Returns
+// row and column via pointers. A max limit is made to stop endless loops.
 
-/*
- * get_elapsed_ms()
- * ----------------
- * Get the current time in milliseconds (for frame timing).
- * On Windows, use GetTickCount() or timeGetTime().
- *
- * TODO: Implement
- */
-/* unsigned long get_elapsed_ms(void); */
+long get_elapsed_ms(void); // Gets the current time in ms
 
-/*
- * sleep_ms()
- * ----------
- * Sleep for the specified number of milliseconds.
- * On Windows: Sleep(ms)  (from windows.h)
- *
- * TODO: Implement
- */
-/* void sleep_ms(int ms); */
+void sleep_ms(int ms); // Sleeps the CPU for specified time.
 
-/*
- * keyboard_hit()
- * ---------------
- * Check if a key has been pressed without blocking.
- * On Windows: _kbhit()  (from conio.h)
- *
- * Returns: non-zero if a key is available, 0 otherwise.
- *
- * TODO: Implement
- */
-/* int keyboard_hit(void); */
+int keyboard_hit(void); // Checks if a key has been pressed (non-blocking).
+                        // Returns non zero if a key is pressed, 0 otherwise.
 
-/*
- * keyboard_get()
- * ---------------
- * Read a key from the keyboard (blocking).
- * On Windows: _getch()  (from conio.h)
- *
- * NOTE: Arrow keys send TWO characters on Windows:
- *   First call returns 0 or 224
- *   Second call returns the actual key code:
- *     UP    = 72
- *     DOWN  = 80
- *     LEFT  = 75
- *     RIGHT = 77
- *
- * TODO: Implement
- */
-/* int keyboard_get(void); */
+int keyboard_get(void); // Read a key from the keyboard (blocking).
+                        /* NOTE: Arrow keys send TWO characters on Windows:
+                         *   First call returns 0 or 224
+                         *   Second call returns the actual key code:
+                         *     UP    = 72
+                         *     DOWN  = 80
+                         *     LEFT  = 75
+                         *     RIGHT = 77
+                         */
 
-#endif /* UTILS_H */
+#endif
