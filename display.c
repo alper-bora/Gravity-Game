@@ -16,7 +16,7 @@ void display_clear() {
 
 void display_render(gameStats *stats) {
   display_clear();
-  for (int i = 0; i < FIELD_ROWS - 1; i++) {
+  for (int i = 0; i < FIELD_ROWS; i++) {
     for (int j = 0; j < FIELD_COLS; j++) {
       printf("%c", stats->field[i][j]);
     }

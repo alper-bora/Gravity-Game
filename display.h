@@ -24,10 +24,8 @@
  * HINT: For flicker-free rendering, instead of clearing the
  *       whole screen, move cursor to (0,0) and overwrite.
  *       Use SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord)
- *
- * TODO: Implement
  */
-/* void display_clear(void); */
+void display_clear(void);
 
 /*
  * display_render()
@@ -45,34 +43,18 @@
  *
  *   2. To the right of the field, draw:
  *      - Input Queue display (showing the 15 elements)
- *        Format:  Input
- *                 <<<<<<<<<<<<<<<
- *                 |2|O|1|1|O|2|X|3|:|:|1|O|3| |O|
- *                 >>>>>>>>>>>>>>>
- *
  *      - Backpack display (vertical stack, top = top of backpack)
- *        Format:  |   |
- *                 | 2 |
- *                 | 1 |
- *                 | 3 |
- *                 +---+
- *                 Backpack
- *
  *      - Teleport count
  *      - Score
  *      - Time elapsed
- *
- * TODO: Implement
  */
-/* void display_render(GameState *state); */
+void display_render(gameStats *stats);
 
 /*
  * display_game_over()
  * -------------------
  * Show the game over screen with final score and time.
- *
- * TODO: Implement
  */
-/* void display_game_over(GameState *state); */
+void display_game_over(gameStats *stats);
 
 #endif /* DISPLAY_H */
