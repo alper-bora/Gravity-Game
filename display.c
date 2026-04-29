@@ -3,63 +3,51 @@
  *  GRAVITY - Display / Rendering Implementation
  * ============================================================
  */
-
 #include "display.h"
+#include "types.h"
+#include "utils.h"
 #include <stdio.h>
-
-/* Windows-specific includes for console manipulation */
-#ifdef _WIN32
 #include <windows.h>
-#endif
 
-/*
- * TODO: Implement display_clear()
- *
- * Option A (simple but causes flicker):
- *   system("cls");
- *
- * Option B (flicker-free, recommended):
- *   COORD coord = {0, 0};
- *   SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
- */
+void display_clear() {
+  COORD coord = {0, 0};
+  SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 
-/*
- * TODO: Implement display_render()
- *
- * Pseudocode:
- *   display_clear()
- *
- *   for each row 0..FIELD_ROWS-1:
- *     for each col 0..FIELD_COLS-1:
- *       print field[row][col]
- *
- *     // After printing the field row, print sidebar info
- *     // on specific rows:
- *     //   Row 0-2:  Input Queue display
- *     //   Row 5-14: Backpack display
- *     //   Row 16:   Teleport count
- *     //   Row 17:   Score
- *     //   Row 18:   Time
- *
- *     print newline
- *
- * OPTIONAL: Use Windows console colors for visual clarity
- *   SetConsoleTextAttribute(handle, color_code)
- *   Example colors:
- *     Player 'P'    -> Green
- *     Robots 'X'    -> Red
- *     Boulders 'O'  -> Yellow/Brown
- *     Treasures     -> Cyan/Magenta
- *     Earth ':'     -> Dark Yellow
- *     Walls '#'     -> White/Gray
- */
+void display_render(gameStats *stats) {
+  display_clear();
+  for (int i = 0; i < FIELD_ROWS - 1; i++) {
+    for (int j = 0; j < FIELD_COLS; j++) {
+      printf("%c", stats->field[i][j]);
+    }
+    if (i == 0)
+      printf("---INPUT QUEUE---");
+    if (i == 1) {
+      for (int k = 0; k < INPUT_QUEUE_SIZE; k++) {
+        printf("%d ", stats->input_queue[k]);
+      }
+    }
+    if (i == 5)
+      printf("---BACKPACK---");
+    if (i == 6) {
+      for (int k = 0; k < BACKPACK_CAPACITY; k++) {
+        printf("%d ", stats->backpack[k]);
+      }
+    }
+    if (i == 16)
+      printf("Teleports remaining: %d", stats->teleports);
+    if (i == 17)
+      printf("Total score: %d", stats->score);
+    if (i == 18)
+      printf("Time: %ld", get_elapsed_ms());
+    printf("\n");
+  }
+}
 
-/*
- * TODO: Implement display_game_over()
- *
- *   Clear screen
- *   Print "GAME OVER"
- *   Print final score
- *   Print time survived
- *   Print "Press any key to exit..."
- */
+void display_game_over(gameStats *stats) {
+  system("cls");
+  printf("***GAME OVER***");
+  printf("Final score: %d", stats->score);
+  printf("Time survived: %ld", get_elapsed_ms());
+  printf("Press any key to exit...");
+}
