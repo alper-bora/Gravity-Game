@@ -33,53 +33,15 @@
 
 #include "types.h"
 
-/* TODO: Define an InputQueue struct:
- *   - elements[INPUT_QUEUE_SIZE]  (array of char, the queue contents)
- *   - front                       (index of first element)
- *   - count                       (number of elements in queue)
- */
+typedef struct {
+  char elements[INPUT_QUEUE_SIZE];
+  int front;
+  int count;
+} InputQueue;
 
-/*
- * input_queue_init()
- * ------------------
- * Fill the queue with INPUT_QUEUE_SIZE random elements
- * using the generation probabilities listed above.
- *
- * TODO: Implement
- */
-/* void input_queue_init(InputQueue *q); */
+void input_queue_init(InputQueue *q);
 
-/*
- * input_queue_generate_element()
- * ------------------------------
- * Generate a single random element based on the probability
- * distribution (out of 40 total):
- *   Roll a random number 0-39:
- *     0-5   -> '1'
- *     6-10  -> '2'
- *     11-14 -> '3'
- *     15    -> 'X'
- *     16-25 -> 'O'
- *     26-34 -> ':'
- *     35-39 -> ' '
- *
- * TODO: Implement
- */
-/* char input_queue_generate_element(void); */
+char input_queue_generate_element(void);
 
-/*
- * input_queue_insert()
- * --------------------
- * Take the front element out of the queue and apply it to the maze.
- * Then generate a new element and add it to the back.
- *
- * Steps:
- *   1. Dequeue the front element
- *   2. Apply conversion rules (see header comment above)
- *   3. Generate a new element and enqueue it
- *
- * TODO: Implement
- */
-/* void input_queue_insert(InputQueue *q, GameState *state); */
-
-#endif /* INPUT_QUEUE_H */
+void input_queue_insert(InputQueue *q, gameStats *stats);
+#endif

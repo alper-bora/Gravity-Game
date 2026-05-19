@@ -13,6 +13,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include "input_queue.h"
 #include "types.h"
 
 /*
@@ -48,7 +49,7 @@ void display_clear(void);
  *      - Score
  *      - Time elapsed
  */
-void display_render(gameStats *stats);
+void display_render(gameStats *stats, Backpack *bp, InputQueue *q);
 
 /*
  * display_game_over()

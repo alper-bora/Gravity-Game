@@ -49,7 +49,8 @@ typedef enum {
   CELL_ROBOT = 'X',
   CELL_TREASURE_1 = '1',
   CELL_TREASURE_2 = '2',
-  CELL_TREASURE_3 = '3'
+  CELL_TREASURE_3 = '3',
+  CELL_BOULDER_FALLING = 'F'
 } cellTypes; // Cell type enums
 
 typedef enum {

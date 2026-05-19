@@ -5,53 +5,90 @@
  */
 
 #include "input_queue.h"
+#include "types.h"
 #include "utils.h"
 #include <stdlib.h>
 
-/*
- * TODO: Implement input_queue_init()
- *   -> Loop INPUT_QUEUE_SIZE times
- *   -> For each slot, call input_queue_generate_element()
- *   -> Set front = 0, count = INPUT_QUEUE_SIZE
- */
+void input_queue_init(InputQueue *q) {
+  q->front = 0;
+  q->count = INPUT_QUEUE_SIZE;
+  for (int i = 0; i < INPUT_QUEUE_SIZE; i++) {
+    q->elements[i] = input_queue_generate_element();
+  }
+}
 
-/*
- * TODO: Implement input_queue_generate_element()
- *
- * Pseudocode:
- *   int r = rand() % 40;
- *   if (r < 6)  return '1';
- *   if (r < 11) return '2';
- *   if (r < 15) return '3';
- *   if (r < 16) return 'X';
- *   if (r < 26) return 'O';
- *   if (r < 35) return ':';
- *   return ' ';
- */
+char input_queue_generate_element() {
+  int r = rand() % 40;
+  if (r < 6)
+    return '1';
+  if (r < 11)
+    return '2';
+  if (r < 15)
+    return '3';
+  if (r < 16)
+    return 'X';
+  if (r < 26)
+    return 'O';
+  if (r < 35)
+    return ':';
+  return ' ';
+}
 
-/*
- * TODO: Implement input_queue_insert()
- *
- * Pseudocode:
- *   char elem = q->elements[q->front]
- *   q->front = (q->front + 1) % INPUT_QUEUE_SIZE
- *
- *   switch (elem):
- *     case '1': case '2': case '3':
- *       find random empty/earth cell -> set to treasure
- *     case 'X':
- *       find random empty/earth cell -> set to robot
- *       add to robots array
- *     case 'O':
- *       find random empty/earth cell -> set to boulder
- *       find random existing boulder -> set to earth
- *       (net boulder count stays same)
- *     case ':':
- *       find random empty cell -> set to earth
- *     case ' ':
- *       find random earth cell -> set to empty
- *
- *   // Generate new element for back of queue
- *   int back = (q->front + q->count - 1) % INPUT_QUEUE_SIZE
- *   q->elements[back] = input_queue_generate_element()
- */
+void input_queue_insert(InputQueue *q, gameStats *stats) {
+  char elem = q->elements[q->front];
+  q->front = (q->front + 1) % INPUT_QUEUE_SIZE;
+  int row = 0;
+  int col = 0;
+  int r = rand() % 2;
+
+  switch (elem) {
+  case '1':
+    if (r) {
+      find_random_cell(stats->field, CELL_EMPTY, &row, &col);
+    } else
+      find_random_cell(stats->field, CELL_EARTH, &row, &col);
+    stats->field[row][col] = CELL_TREASURE_1;
+    break;
+  case '2':
+    if (r) {
+      find_random_cell(stats->field, CELL_EMPTY, &row, &col);
+    } else
+      find_random_cell(stats->field, CELL_EARTH, &row, &col);
+    stats->field[row][col] = CELL_TREASURE_2;
+    break;
+  case '3':
+    if (r) {
+      find_random_cell(stats->field, CELL_EMPTY, &row, &col);
+    } else
+      find_random_cell(stats->field, CELL_EARTH, &row, &col);
+    stats->field[row][col] = CELL_TREASURE_3;
+    break;
+  case 'X':
+    find_random_cell(stats->field, CELL_EMPTY, &row, &col);
+    stats->field[row][col] = CELL_ROBOT;
+    stats->robots[stats->num_robots].r = row;
+    stats->robots[stats->num_robots].c = col;
+    stats->num_robots++;
+    break;
+  case 'O':
+    if (r) {
+      find_random_cell(stats->field, CELL_EMPTY, &row, &col);
+    } else
+      find_random_cell(stats->field, CELL_EARTH, &row, &col);
+    stats->field[row][col] = CELL_BOULDER;
+    find_random_cell(stats->field, CELL_BOULDER, &row, &col);
+    stats->field[row][col] = CELL_EARTH;
+    break;
+  case ':':
+    find_random_cell(stats->field, CELL_EMPTY, &row, &col);
+    stats->field[row][col] = CELL_EARTH;
+    break;
+  case ' ':
+    find_random_cell(stats->field, CELL_EARTH, &row, &col);
+    stats->field[row][col] = CELL_EMPTY;
+    break;
+  }
+
+  int back = (q->front + q->count - 1) % INPUT_QUEUE_SIZE;
+  q->elements[back] = input_queue_generate_element();
+}

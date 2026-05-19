@@ -13,20 +13,13 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "input_queue.h"
 #include "types.h"
 
 void game_init(gameStats *stats);
 
 int game_check_over(gameStats *stats);
 
-/*
- * Called once per frame. Orchestrates all per-frame updates:
- *   1. Process player input
- *   2. Move robots
- *   3. Apply boulder gravity
- *   4. Tick the input queue timer and insert if needed
- *   5. Check game over conditions
- */
-void game_update(gameStats *stats);
+void game_update(gameStats *stats, Backpack *bp, InputQueue *q);
 
-#endif /* GAME_H */
+#endif

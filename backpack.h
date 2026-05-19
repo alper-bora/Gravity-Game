@@ -25,12 +25,6 @@
 
 #include "types.h"
 
-struct Backpack
-{
- int items[BACKPACK_CAPACITY];
- int top;
-};
-
 void backpack_init(Backpack *bp);
 
 int backpack_is_full(Backpack *bp);

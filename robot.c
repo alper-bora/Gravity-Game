@@ -12,41 +12,63 @@
 
 void robot_update_all(gameStats *stats) {
   for (int i = 0; i < NUM_ROBOTS; i++) {
-    int temp;
     switch (random_range(0, 3)) {
     case 0:
-      if (stats->robots[i].r - 1 == CELL_EMPTY) {
-        stats->robots[i].r = temp;
+      if (stats->field[stats->robots[i].r - 1][stats->robots[i].c] ==
+              CELL_EMPTY ||
+          stats->field[stats->robots[i].r - 1][stats->robots[i].c] ==
+              CELL_PLAYER) {
+        stats->field[stats->robots[i].r][stats->robots[i].c] = CELL_EMPTY;
+        stats->field[stats->robots[i].r - 1][stats->robots[i].c] = CELL_ROBOT;
         stats->robots[i].r = stats->robots[i].r - 1;
-        temp = CELL_EMPTY;
+        if (stats->robots[i].r == stats->player_row &&
+            stats->robots[i].c == stats->player_col) {
+          stats->is_game_over = 1;
+        }
         break;
       }
     case 1:
-      if (stats->robots[i].r + 1 == CELL_EMPTY) {
-        stats->robots[i].r = temp;
+      if (stats->field[stats->robots[i].r + 1][stats->robots[i].c] ==
+              CELL_EMPTY ||
+          stats->field[stats->robots[i].r + 1][stats->robots[i].c] ==
+              CELL_PLAYER) {
+        stats->field[stats->robots[i].r][stats->robots[i].c] = CELL_EMPTY;
+        stats->field[stats->robots[i].r + 1][stats->robots[i].c] = CELL_ROBOT;
         stats->robots[i].r = stats->robots[i].r + 1;
-        temp = CELL_EMPTY;
+        if (stats->robots[i].r == stats->player_row &&
+            stats->robots[i].c == stats->player_col) {
+          stats->is_game_over = 1;
+        }
         break;
       }
     case 2:
-      if (stats->robots[i].c - 1 == CELL_EMPTY) {
-        stats->robots[i].c = temp;
+      if (stats->field[stats->robots[i].r][stats->robots[i].c - 1] ==
+              CELL_EMPTY ||
+          stats->field[stats->robots[i].r][stats->robots[i].c - 1] ==
+              CELL_PLAYER) {
+        stats->field[stats->robots[i].r][stats->robots[i].c] = CELL_EMPTY;
+        stats->field[stats->robots[i].r][stats->robots[i].c - 1] = CELL_ROBOT;
         stats->robots[i].c = stats->robots[i].c - 1;
-        temp = CELL_EMPTY;
+        if (stats->robots[i].r == stats->player_row &&
+            stats->robots[i].c == stats->player_col) {
+          stats->is_game_over = 1;
+        }
         break;
       }
     case 3:
-      if (stats->robots[i].c + 1 == CELL_EMPTY) {
-        stats->robots[i].c = temp;
+      if (stats->field[stats->robots[i].r][stats->robots[i].c + 1] ==
+              CELL_EMPTY ||
+          stats->field[stats->robots[i].r][stats->robots[i].c + 1] ==
+              CELL_PLAYER) {
+        stats->field[stats->robots[i].r][stats->robots[i].c] = CELL_EMPTY;
+        stats->field[stats->robots[i].r][stats->robots[i].c + 1] = CELL_ROBOT;
         stats->robots[i].c = stats->robots[i].c + 1;
-        temp = CELL_EMPTY;
+        if (stats->robots[i].r == stats->player_row &&
+            stats->robots[i].c == stats->player_col) {
+          stats->is_game_over = 1;
+        }
         break;
       }
-    }
-    if (stats->robots[i].r == stats->player_col &&
-        stats->robots[i].c == stats->player_col) {
-      game_check_over(&stats);
-      display_game_over(&stats);
     }
   }
 }

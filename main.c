@@ -24,12 +24,17 @@
 #include "types.h"
 #include "utils.h"
 
-int main(void) {
+int main() {
   srand(time(NULL));
   gameStats stats;
+  Backpack bp;
+  InputQueue q;
   game_init(&stats);
+  backpack_init(&bp);
+  input_queue_init(&q);
   while (!game_check_over(&stats)) {
-    display_render(&stats);
+    game_update(&stats, &bp, &q);
+    display_render(&stats, &bp, &q);
     sleep_ms(100);
   }
   display_game_over(&stats);

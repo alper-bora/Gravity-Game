@@ -59,18 +59,20 @@ void backpack_discard_top(Backpack *bp)
 int backpack_check_merge(Backpack *bp, gameStats *stat)
 {
  int total_score = 0;
- int merged_value = 0;
  while (bp->top >= 1)
  {
   if (bp->items[bp->top] == bp->items[bp->top - 1])
   {
-   merged_value = bp->items[bp->top];
-   backpack_pop(bp);
+   int merged_value = backpack_pop(bp);
+   backpack_pop(bp); // Pop the second one too
    switch (merged_value)
    {
     case 1: total_score += SCORE_MERGE_1; break;
     case 2: total_score += SCORE_MERGE_2; break;
-    default: total_score += SCORE_MERGE_3; stat->teleports++; break;
+    case 3: 
+     total_score += SCORE_MERGE_3; 
+     stat->teleports++; 
+     break;
    }
   }
   else break;
