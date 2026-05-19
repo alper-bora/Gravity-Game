@@ -1,2 +1,18 @@
+# Build and Cache
+build/
+.cache/
+cmake-build-debug/
+*.obj
+*.pdb
+*.exe
+*.idx
+
+# IDEs
+.idea/
+.vscode/
+
+# Documentation and Project Files
 EED Project - Gravity.pdf
 walkthrough.md
+CMakeLists.txt
+README.md
