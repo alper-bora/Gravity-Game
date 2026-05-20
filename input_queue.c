@@ -64,11 +64,15 @@ void input_queue_insert(InputQueue *q, gameStats *stats) {
     stats->field[row][col] = CELL_TREASURE_3;
     break;
   case 'X':
-    find_random_cell(stats->field, CELL_EMPTY, &row, &col);
-    stats->field[row][col] = CELL_ROBOT;
-    stats->robots[stats->num_robots].r = row;
-    stats->robots[stats->num_robots].c = col;
-    stats->num_robots++;
+    for (int i = 0; i < NUM_ROBOTS; i++) {
+      if (stats->robots[i].r == 0 && stats->robots[i].c == 0) {
+        find_random_cell(stats->field, CELL_EMPTY, &row, &col);
+        stats->field[row][col] = CELL_ROBOT;
+        stats->robots[i].r = row;
+        stats->robots[i].c = col;
+        break;
+      }
+    }
     break;
   case 'O':
     if (r) {

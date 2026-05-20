@@ -82,16 +82,21 @@ void display_render(gameStats *stats, Backpack *bp, InputQueue *q) {
       printf("  ---BACKPACK---");
     if (i == 6) {
       printf("  ");
+      int printed = 0;
       for (int k = bp->top; k >= 0; k--) {
         printf("%d ", bp->items[k]);
+        printed += 2;
+      }
+      for (int k = printed; k < 16; k++) {
+        printf(" ");
       }
     }
     if (i == 16)
-      printf("  Teleports remaining: %d", stats->teleports);
+      printf("  Teleports remaining: %-5d", stats->teleports);
     if (i == 17)
-      printf("  Total score: %d", stats->score);
+      printf("  Total score: %-10d", stats->score);
     if (i == 18)
-      printf("  Time: %.1fs", stats->time_elapsed);
+      printf("  Time: %-10.1fs", stats->time_elapsed);
     printf("\n");
   }
 }

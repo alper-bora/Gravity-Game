@@ -17,6 +17,8 @@ int random_range(int min, int max) { return min + rand() % (max - min + 1); }
 
 void find_random_cell(char field[FIELD_ROWS][FIELD_COLS], cellTypes target_type,
                       int *out_row, int *out_col) {
+  *out_row = 1;
+  *out_col = 1;
   int attempts = 0;
   do {
     int r = random_range(1, FIELD_ROWS - 2);

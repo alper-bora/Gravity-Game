@@ -12,6 +12,9 @@
 
 void robot_update_all(gameStats *stats) {
   for (int i = 0; i < NUM_ROBOTS; i++) {
+    if (stats->robots[i].r == 0 && stats->robots[i].c == 0) {
+      continue;
+    }
     switch (random_range(0, 3)) {
     case 0:
       if (stats->field[stats->robots[i].r - 1][stats->robots[i].c] ==
