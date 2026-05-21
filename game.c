@@ -14,10 +14,13 @@
 #include "utils.h"
 
 void game_init(gameStats *stats) {
-  // Placing the walls
   for (int i = 0; i < FIELD_ROWS; i++) {
     for (int j = 0; j < FIELD_COLS; j++) {
       if ((i == 0 || i == FIELD_ROWS - 1) || (j == 0 || j == FIELD_COLS - 1)) {
+        stats->field[i][j] = '#';
+      } else if (i == 8 && j < FIELD_COLS - 5) {
+        stats->field[i][j] = '#';
+      } else if (i == 16 && j >= 4) {
         stats->field[i][j] = '#';
       } else {
         stats->field[i][j] = ':';
